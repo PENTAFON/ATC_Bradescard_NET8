@@ -1,0 +1,16 @@
+﻿
+/*Esta hoja de estilos pertenece al controlador Result y su vista es Success*/
+
+hr {
+    color: #D60415;
+}
+
+.logo-gnp {
+    width: 250px;
+    height: 250px;
+}
+
+.titulo-success {
+    color: #820711;
+    margin-top: 10px;
+}

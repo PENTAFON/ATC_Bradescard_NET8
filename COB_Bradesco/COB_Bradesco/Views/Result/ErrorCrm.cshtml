@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "ErrorCrm";
+}
+
+<link rel="stylesheet" href="~/css/Success.css" />
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="border custom-border p-4 bg-white rounded">
+            <div class="row">
+                <div class="col-6 d-flex align-items-center">
+                    <div class="p-3 bg-white">
+                        <img src="~/Images/BradescardLogo.png" class="logo-gnp" />
+                    </div>
+                </div>
+                <div class="col-md-12 titulo-success">
+                    <h2>Error al Momento de Guardar</h2>
+                    <br />
+                    <label>@ViewBag.ErrorMessage</label>
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

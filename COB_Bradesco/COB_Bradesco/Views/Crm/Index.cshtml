@@ -1,0 +1,303 @@
+﻿@model Bradescard.Models.CrmDetalles
+@{
+    ViewData["Title"] = "Index";
+}
+
+@{
+    List<SelectListItem> TipoBusqueda = new List<SelectListItem> {
+        new SelectListItem { Text = "Numero de Cliente",Value = "1"}
+    };
+}
+
+
+<link rel="stylesheet" href="~/css/CrmIndex.css" />
+<script src="~/js/CrmIndex.js"></script>
+
+
+<div id="crm-data"
+     data-autenticacion-url="@Url.Action("SearchAutenticacion", "Crm")"
+     data-protocolo-url="@Url.Action("SearchProtocolo", "Crm")"
+     data-resultado-url="@Url.Action("SearchResultado", "Crm")"
+     data-subcla-url="@Url.Action("SearchSubCla", "Crm")"
+     data-subcla2-url="@Url.Action("SearchSubCla2", "Crm")"
+     data-busqueda-url="@Url.Action("SearchClientes", "Crm")">
+</div>
+
+
+<div class="container-fluid mt-4">
+    @using (Html.BeginForm("GuardaIndex", "Crm", FormMethod.Post, new { id = "formCliente" }))
+    {
+        <div class="row">
+
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar">
+                <div class="text-center mb-4">
+                    <img src="~/Images/BradescardLogo.png" class="img-fluid" alt="Bradescard Logo">
+                </div>
+            </div>
+
+            <div class="col-md-10">
+                @* Apartado de busqueda *@
+                <div class="col-12">
+                    <div class="row g-2">
+                        <div class="col-md-3">
+                            <h5 style="color: #820711"><i class="bi bi-search gradient-icon"></i> Búsqueda de Registro</h5>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row g-2">
+                                <div class="col-3">
+                                    @Html.TextBox("DtoBusqueda", "", new { @class = "form-control", autocomplete = "off" })
+                                </div>
+                                <div class="col-3">
+                                    @Html.DropDownList("TipoBusqueda", TipoBusqueda, "SELECCIONE", new { id = "TipoBusqueda", @class = "form-select"})
+                                </div>
+                                <div class="col-3 d-flex align-items-center">
+                                    <button class="btn btn-success w-100" type="button" id="BusquedaCliente">Buscar</button>
+                                </div>
+                                <b style="color: #820711; display: none" id="loading-image">
+                                    ESTAMOS BUSCANDO LA INFORMACIÓN, POR FAVOR ESPERA UN MOMENTO
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*TABLA DE RESULTADOS DE LA BUSQUEDA*@
+                <div class="row">
+                    <div class="col-12" style="margin-top: 10px;">
+                        <div class="col-12" style="color: black;">
+                            <div class="col-11 col-md-offset-1" style="padding:0px;">
+                                <div id="SearchDiv" class="col-md-12" style="max-height: 600px; float: left; overflow: auto;">
+                                    <table class="table table-striped" id="tblConsulta" style="width: 100%;background-color: white;">
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <hr />
+                <div class="main-content">
+                    <div class="row mb-4">                      
+
+                        <div class="info-block">
+                            <div class="col-md-12">
+                                <div class="row g-2 mb-3">
+                                    <div class="col-md-4">
+                                        <b>Bin:</b><br />
+                                        @Html.HiddenFor(m => m.Bin)
+                                        @Html.DisplayFor(m => m.Bin)
+                                    </div>
+                                    <div class="col-md-4">
+                                        <b>Bin8:</b><br />
+                                        @Html.HiddenFor(m => m.Bin8)
+                                        @Html.DisplayFor(m => m.Bin8)
+                                    </div>
+
+                                    @if (@ViewBag.OrgTxt == "Si")
+                                    {
+                                        <div class="col-md-4">
+                                            <b>ORG:</b>
+                                            @Html.TextBoxFor(m => m.Org, new { id = "Org", @class = "form-control", autocomplete = "off", maxlength = "3" })
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-md-4">
+                                            <b>ORG:</b><br />
+                                            @Html.HiddenFor(m => m.Org)
+                                            @Html.DisplayFor(m => m.Org)
+                                        </div>
+                                        
+                                    }                                    
+                                                                     
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="row g-2 mb-3">
+                                    <div class="col-md-4">
+                                        <b>Producto:</b><br />
+                                        @Html.HiddenFor(m => m.Producto)
+                                        @Html.DisplayFor(m => m.Producto)
+                                    </div>
+                                    <div class="col-md-4">
+                                        <b>Socio:</b><br />
+                                        @Html.HiddenFor(m => m.Socio)
+                                        @Html.DisplayFor(m => m.Socio)
+                                    </div>
+                                    <div class="col-md-4">
+                                        <b>Nombre Cola:</b><br />
+                                        @Html.HiddenFor(m => m.NombreCola)
+                                        @Html.DisplayFor(m => m.NombreCola)
+                                    </div>
+                                    <div class="col-md-4">
+                                        <b>Teléfono:</b><br />
+                                        @Html.HiddenFor(m => m.Telefono)
+                                        @Html.DisplayFor(m => m.Telefono)
+                                    </div>
+                                    <div class="col-md-4">
+                                        <b>Nombre Comercial:</b><br />
+                                        @Html.HiddenFor(m => m.NombreComercial)
+                                        @Html.DisplayFor(m => m.NombreComercial)
+                                    </div>
+                                    <div class="col-md-4">
+                                        <b>Opción Menú:</b><br />
+                                        @Html.HiddenFor(m => m.OpcionMenu)
+                                        @Html.DisplayFor(m => m.OpcionMenu)
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        @* Datos de Retencion *@
+                        <div class="col-md-12 info-block">                            
+                            <div class="col-md-12 section-header">
+                                <h5>
+                                    <i class="bi bi-lock gradient-icon"></i> Datos Retención
+                                </h5>
+                            </div>
+
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-4">
+                                    <b>Etiqueta:</b><br />
+                                    @Html.HiddenFor(m => m.Clientes.Etiqueta)
+                                    @Html.DisplayFor(m => m.Clientes.Etiqueta)
+                                </div>
+                                <div class="col-md-4">
+                                    <b>Aumento LC:</b><br />
+                                    @Html.HiddenFor(m => m.Clientes.AumentoLC)
+                                    @Html.DisplayFor(m => m.Clientes.AumentoLC)
+                                </div>
+                                <div class="col-md-4">
+                                    <b>Retiro de Efectivo:</b><br />
+                                    @Html.HiddenFor(m => m.Clientes.RetiroEfectivo)
+                                    @Html.DisplayFor(m => m.Clientes.RetiroEfectivo)
+                                </div>
+                                <div class="col-md-4">
+                                    <b>Seguro Activo / Tipo:</b><br />
+                                    @Html.HiddenFor(m => m.Clientes.SeguroActivo)
+                                    @Html.DisplayFor(m => m.Clientes.SeguroActivo)
+                                </div>
+                                <div class="col-md-4">
+                                    <b>Meses Restantes Membresia:</b><br />
+                                    @Html.HiddenFor(m => m.Clientes.MesesRestantesMembresia)
+                                    @Html.DisplayFor(m => m.Clientes.MesesRestantesMembresia)
+                                </div>
+                                <div class="col-md-4">
+                                    <b>Antigüedad Cliente:</b><br />
+                                    @Html.HiddenFor(m => m.Clientes.AntiguedadCliente)
+                                    @Html.DisplayFor(m => m.Clientes.AntiguedadCliente)
+                                </div>
+                                <div class="col-md-4">
+                                    <b>PLCC Activa:</b><br />
+                                    @Html.HiddenFor(m => m.Clientes.PLCC)
+                                    @Html.DisplayFor(m => m.Clientes.PLCC)
+                                </div>
+                                <div class="col-md-4">
+                                    <b>PL Activa:</b><br />
+                                    @Html.HiddenFor(m => m.Clientes.PL)
+                                    @Html.DisplayFor(m => m.Clientes.PL)
+                                </div>
+                                <div class="col-md-4">
+                                    <b>Desinteresante Activo:</b><br />
+                                    @Html.HiddenFor(m => m.Clientes.DesinteresanteActivo)
+                                    @Html.DisplayFor(m => m.Clientes.DesinteresanteActivo)
+                                </div>
+                                <div class="col-md-4">
+                                    <b>Anualidad Condicionada:</b><br />
+                                    @Html.HiddenFor(m => m.Clientes.AnualidadCondicionada)
+                                    @Html.DisplayFor(m => m.Clientes.AnualidadCondicionada)
+                                </div>
+                                <div class="col-md-4">
+                                    <b>Otra VISA o Socio:</b><br />
+                                    @Html.HiddenFor(m => m.Clientes.OtraVISA)
+                                    @Html.DisplayFor(m => m.Clientes.OtraVISA)
+                                </div>
+                                <div class="col-md-4">
+                                    <b>Meses Desinteresante:</b><br />
+                                    @Html.HiddenFor(m => m.Clientes.MesesDesinteresante)
+                                    @Html.DisplayFor(m => m.Clientes.MesesDesinteresante)
+                                </div>
+                            </div>
+                        </div>
+
+                        @* Datos de captura *@
+                        <div class="col-md-12 info-block">
+                            <div class="col-md-12 section-header">
+                                <h5>
+                                    <i class="bi bi-person gradient-icon"></i> Información de Cliente
+                                </h5>
+                            </div>
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-4">
+                                    <b>Nombre de Cliente:</b>
+                                    @Html.TextBoxFor(m => m.NombreCliente, new { id = "NombreCliente", @class = "form-control", onkeypress = "return acceptLetters(event)", autocomplete = "off", maxlength = "70" })
+                                </div>
+                                <div class="col-md-4">
+                                    <b>Número de Tarjeta:</b>
+                                    @Html.TextBoxFor(m => m.NumeroTarjeta, new { id = "NumeroTarjeta", @class = "form-control", maxlength = "4", onkeypress = "return acceptNum(event)", autocomplete = "off" })
+                                    
+                                </div>
+                                <div class="col-md-4">
+                                    <b>Número de Cliente:</b>
+                                    @Html.TextBoxFor(m => m.NumeroCuenta, new { id = "NumeroCuenta", @class = "form-control", onkeypress = "return acceptNum(event)", maxlength = "10", autocomplete = "off" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @* Tipificaciones *@
+                        <div class="col-md-12" style="margin-bottom:15px;">
+                            <hr />
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label>Motivo de Llamada:</label>
+                                    @Html.DropDownListFor(m => m.MotivoLlamada, (SelectList)ViewBag.MotivoLlamada, "SELECCIONE", new { @class = "form-control ddl-motivo" })
+                                </div>
+                                <div class="col-md-4 d-none" id="dvSub1">
+                                    <label>Autenticación:</label>
+                                    @Html.DropDownListFor(m => m.Autenticacion, (SelectList)ViewBag.ListaVacia, "SELECCIONE", new { @class = "form-control ddl-autenticacion" })
+                                </div>
+                                <div class="col-md-4 d-none" id="dvSub2">
+                                    <label>Protocolo Utilizado:</label>
+                                    @Html.DropDownListFor(m => m.ProtocoloUtilizado, (SelectList)ViewBag.ListaVacia, "SELECCIONE", new { @class = "form-control ddl-protocolo" })
+                                </div>
+                                <div class="col-md-4 d-none" id="dvSub3">
+                                    <label>Resultado:</label>
+                                    @Html.DropDownListFor(m => m.Resultado, (SelectList)ViewBag.ListaVacia, "SELECCIONE", new { @class = "form-control ddl-resultado" })
+                                </div>
+                                <div class="col-md-4 d-none" id="dvSub4">
+                                    <label>SubClasificación:</label>
+                                    @Html.DropDownListFor(m => m.Subclasificacion, (SelectList)ViewBag.ListaVacia, "SELECCIONE", new { @class = "form-control ddl-resultado" })
+                                </div>
+                                <div class="col-md-4 d-none" id="dvSub5">
+                                    <label>SubClasificación 2:</label>
+                                    @Html.DropDownListFor(m => m.Subclasificacion2, (SelectList)ViewBag.ListaVacia, "SELECCIONE", new { @class = "form-control ddl-resultado" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" class="btn btn-success" id="btnguardacrm">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-10 col-md-offset-1">
+                    @Html.HiddenFor(m => m.ChainId, new { id = "ChainId" })
+                </div>
+                <div class="col-md-12">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-11" style="color:#820711">
+                        Chain_Id:
+                        @Html.DisplayFor(m => m.ChainId)                     
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

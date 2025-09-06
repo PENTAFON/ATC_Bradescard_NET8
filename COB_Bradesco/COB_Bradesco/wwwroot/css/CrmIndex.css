@@ -1,0 +1,71 @@
+﻿/*Esta hoja de estilos pertenece al controlador Crm y su vista es Index*/
+
+/* Icono con gradiente */
+.gradient-icon {
+    font-size: x-large; /* o el tamaño que necesites */
+    background: linear-gradient(45deg, #820711, #D60415);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* Etiquetas */
+label {
+    font-size: small;
+}
+
+/* Separador */
+hr {
+    color: #D60415;
+}
+
+/* Fondo general */
+body {
+    background-color: #edece6;
+    margin: 0;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: white;
+    border-right: 1px solid #ddd;
+    padding: 1rem;
+}
+
+/* Contenedor principal */
+.main-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+}
+
+/* Encabezados de sección */
+.section-header h5 {
+    text-align: left;
+    color: #820711;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #ddd; /* agregado para dar separación visual */
+    padding-bottom: 5px; /* agregado para darle aire */
+}
+
+/* Bloques de información */
+.info-block {
+    background-color: #f9f9f9; /* agregado para resaltar */
+    padding: 10px; /* agregado */
+    border-radius: 5px; /* agregado */
+    margin-bottom: 20px;
+}
+
+/* Botón */
+#btnguardacrm {
+    min-width: 120px;
+}
+
+/* Ocultar elementos dinámicos */
+.d-none {
+    display: none !important;
+}
