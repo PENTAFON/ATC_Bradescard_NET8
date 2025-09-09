@@ -289,12 +289,36 @@
 
                 <div class="col-md-10 col-md-offset-1">
                     @Html.HiddenFor(m => m.ChainId, new { id = "ChainId" })
+                    @Html.HiddenFor(m => m.InteractionId, new { id = "hdn_interactionid" })
+                    @Html.HiddenFor(m => m.CompanyId, new { id = "hdn_companyid" })
+                    @Html.HiddenFor(m => m.ProjectId, new { id = "hdn_projectid" })
+                    @Html.HiddenFor(m => m.WorkgroupId, new { id = "hdn_workgroup" })
+                    @Html.HiddenFor(m => m.AgentId, new { id = "hdn_agentid" })
+                    @Html.HiddenFor(m => m.Username, new { id = "hdn_username" })
+                    @Html.HiddenFor(m => m.Ani, new { id = "hdn_ani" })
+                    @Html.HiddenFor(m => m.Dnis, new { id = "hdn_dnis" })
                 </div>
                 <div class="col-md-12">
                     <div class="col-sm-1"></div>
                     <div class="col-sm-11" style="color:#820711">
-                        Chain_Id:
-                        @Html.DisplayFor(m => m.ChainId)                     
+                        InteractionId:
+                        @Html.DisplayFor(m => m.InteractionId)
+                        &nbsp;&nbsp;&nbsp;CompanyId:
+                        @Html.DisplayFor(m => m.CompanyId)
+                        &nbsp;&nbsp;&nbsp;ProjectId:
+                        @Html.DisplayFor(m => m.ProjectId)
+                        &nbsp;&nbsp;&nbsp;WorkgroupId:
+                        @Html.DisplayFor(m => m.WorkgroupId)
+                        &nbsp;&nbsp;&nbsp;AgentId:
+                        @Html.DisplayFor(m => m.AgentId)
+                        &nbsp;&nbsp;&nbsp;Username:
+                        @Html.DisplayFor(m => m.Username)
+                        &nbsp;&nbsp;&nbsp;Chain_Id:
+                        @Html.DisplayFor(m => m.ChainId)
+                        &nbsp;&nbsp;&nbsp;Dnis:
+                        @Html.DisplayFor(m => m.Dnis)
+                        &nbsp;&nbsp;&nbsp;Ani:
+                        @Html.DisplayFor(m => m.Ani)
                     </div>
                 </div>
             </div>
