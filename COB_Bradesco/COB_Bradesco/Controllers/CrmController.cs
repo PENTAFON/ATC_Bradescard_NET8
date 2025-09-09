@@ -32,6 +32,15 @@ namespace Bradescard.Controllers
             vm.Telefono = Request.Query["ANI"];
             vm.ChainId = Request.Query["CHAIN_ID"];
 
+            vm.InteractionId = Request.Query["INTERACTIONID"];
+            vm.CompanyId = Request.Query["COMPANYID"];
+            vm.ProjectId = Request.Query["PROJECTID"];
+            vm.WorkgroupId = Request.Query["WORKGROUPID"];
+            vm.AgentId = Request.Query["AGENTID"];
+            vm.Username = Request.Query["USERNAME"];
+            vm.Ani = Request.Query["ANI"];
+            vm.Dnis = Request.Query["DNIS"];
+
             if (string.IsNullOrWhiteSpace(vm.Org))
             {
                 ViewBag.OrgTxt = "Si";

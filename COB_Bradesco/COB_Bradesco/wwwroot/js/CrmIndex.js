@@ -427,6 +427,15 @@ function Select(id) {
     const opcion = $("#OpcionMenu").val();
     const nomCola = $("#NombreCola").val();
     const ani = $("#Telefono").val();
+    //Datos de Interaccion
+    const inter = $("#hdn_interactionid").val();
+    const com = $("#hdn_companyid").val();
+    const pro = $("#hdn_projectid").val();
+    const wor = $("#hdn_workgroup").val();
+    const use = $("#hdn_username").val();
+    const dni = $("#hdn_dnis").val();
+    const age = $("#hdn_agentid").val();
+
 
     window.location = '../Crm/Index?BIN=' + bin
         + '&BIN8=' + bin8
@@ -437,6 +446,13 @@ function Select(id) {
         + '&OPCIONMENU=' + opcion
         + '&NOMBRECOLA=' + nomCola
         + '&ANI=' + ani 
+        +'&INTERACTIONID=' + inter
+        + '&COMPANYID=' + com
+        + '&PROJECTID=' + pro
+        + '&WORKGROUPID=' + wor
+        + '&AGENTID=' + age
+        + '&USERNAME=' + use
+        + '&DNIS=' + dni
         + '&CHAIN_ID='+id;
 
 }

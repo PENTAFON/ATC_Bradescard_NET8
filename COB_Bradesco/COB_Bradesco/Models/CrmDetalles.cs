@@ -33,6 +33,15 @@ namespace Bradescard.Models
         public string? Socio{ get; set; }
         public DateTime? FechaRegistro { get; set; }
         public string? ChainId { get; set; }
+        public string? InteractionId { get; set; }
+        public string? CompanyId { get; set; }
+        public string? ProjectId { get; set; }
+        public string? WorkgroupId { get; set; }
+        public string? AgentId { get; set; }
+        public string? Username { get; set; }
+        public string? Ani { get; set; }
+        public string? Dnis { get; set; }
+        
         //Manejo de errores
         [NotMapped] public CrmClientesVm Clientes { get; set; }
         [NotMapped] public string ErrorMessage { get; set; }
