@@ -46,6 +46,11 @@ namespace Bradescard.Controllers
                 ViewBag.OrgTxt = "Si";
             }
 
+            if (string.IsNullOrWhiteSpace(vm.Socio))
+            {
+                ViewBag.SociDd = "Si";
+            }
+
 
 
             int r = 0;
@@ -80,6 +85,7 @@ namespace Bradescard.Controllers
             }
 
             ViewBag.MotivoLlamada = new SelectList(_db.catMotivoLlamada.Where(a => a.Activo == true), "Id", "MotivoLlamada");
+            ViewBag.Socio = new SelectList(_db.catSocio.Where(a => a.Activo == true), "Id", "Socio");
             ViewBag.ListaVacia = new SelectList(string.Empty, "Value", "Text");
 
         

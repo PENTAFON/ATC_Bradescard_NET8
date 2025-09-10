@@ -362,13 +362,39 @@ $(document).ready(function () {
                 }
             }
         }
-
-
-        let ddAuten2 = parseInt($("#Autenticacion").val(), 10);
-        
+                
+        let ddAuten2 = parseInt($("#Autenticacion").val(), 10) || 0;
+                        
         // when not in 11( NO ES CLIENTE BRADESCARD)
         if (ddAuten2 !== 11)
         {
+            
+            let orgTxt = $("#OrgTxt");
+            if (orgTxt.length > 0) { // solo valida si existe en el DOM
+                let valorOrg = orgTxt.val()?.trim();
+                if (!valorOrg) {
+                    orgTxt.css("border-color", "red").focus();
+                    alert("¡El campo ORG es obligatorio!");
+                    return;
+                } else {
+                    orgTxt.css("border-color", "#ccc");
+                }
+            }
+
+            // --- Validación de SocioDd ---
+            let socioDd = $("#SocioDd");
+            if (socioDd.length > 0) { // solo valida si existe en el DOM
+                let valorSocio = socioDd.val();
+                if (!valorSocio || valorSocio === "0") {
+                    socioDd.css("border-color", "red").focus();
+                    alert("¡Debe seleccionar un socio!");
+                    return;
+                } else {
+                    socioDd.css("border-color", "#ccc");
+                }
+            }
+
+
             //Valida campos para guardar
             let arrayCampos = ["NombreCliente", "NumeroTarjeta", "NumeroCuenta"];
             for (let i = 0; i < arrayCampos.length; i++) {
@@ -381,6 +407,18 @@ $(document).ready(function () {
                     $("#" + arrayCampos[i]).css("border-color", "#ccc");
                 }
             }
+
+            // --- Validación específica de Número de Cuenta ---
+            let numeroCuenta = $("#NumeroCuenta").val().trim();
+            if (!/^\d{10}$/.test(numeroCuenta)) { // exactamente 10 dígitos
+                $("#NumeroCuenta").css("border-color", "red").focus();
+                alert("¡El Número de Cliente debe tener exactamente 10 dígitos!");
+                return;
+            } else {
+                $("#NumeroCuenta").css("border-color", "#ccc");
+            }
+
+
 
         }
 

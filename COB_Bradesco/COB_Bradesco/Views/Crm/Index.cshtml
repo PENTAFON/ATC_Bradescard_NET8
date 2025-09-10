@@ -10,8 +10,13 @@
 }
 
 
-<link rel="stylesheet" href="~/css/CrmIndex.css" />
+@* <link rel="stylesheet" href="~/css/CrmIndex.css" />
 <script src="~/js/CrmIndex.js"></script>
+ *@
+
+<link rel="stylesheet" href="~/css/CrmIndex.css" asp-append-version="true" />
+<script src="~/js/CrmIndex.js" asp-append-version="true"></script>
+
 
 
 <div id="crm-data"
@@ -49,7 +54,7 @@
                                     @Html.TextBox("DtoBusqueda", "", new { @class = "form-control", autocomplete = "off" })
                                 </div>
                                 <div class="col-3">
-                                    @Html.DropDownList("TipoBusqueda", TipoBusqueda, "SELECCIONE", new { id = "TipoBusqueda", @class = "form-select"})
+                                    @Html.DropDownList("TipoBusqueda", TipoBusqueda, "SELECCIONE", new { id = "TipoBusqueda", @class = "form-select" })
                                 </div>
                                 <div class="col-3 d-flex align-items-center">
                                     <button class="btn btn-success w-100" type="button" id="BusquedaCliente">Buscar</button>
@@ -80,7 +85,7 @@
 
                 <hr />
                 <div class="main-content">
-                    <div class="row mb-4">                      
+                    <div class="row mb-4">
 
                         <div class="info-block">
                             <div class="col-md-12">
@@ -100,7 +105,7 @@
                                     {
                                         <div class="col-md-4">
                                             <b>ORG:</b>
-                                            @Html.TextBoxFor(m => m.Org, new { id = "Org", @class = "form-control", autocomplete = "off", maxlength = "3" })
+                                            @Html.TextBoxFor(m => m.Org, new { id = "OrgTxt", @class = "form-control", autocomplete = "off", maxlength = "3" })
                                         </div>
                                     }
                                     else
@@ -110,9 +115,9 @@
                                             @Html.HiddenFor(m => m.Org)
                                             @Html.DisplayFor(m => m.Org)
                                         </div>
-                                        
-                                    }                                    
-                                                                     
+
+                                    }
+
                                 </div>
                             </div>
 
@@ -123,11 +128,23 @@
                                         @Html.HiddenFor(m => m.Producto)
                                         @Html.DisplayFor(m => m.Producto)
                                     </div>
-                                    <div class="col-md-4">
-                                        <b>Socio:</b><br />
-                                        @Html.HiddenFor(m => m.Socio)
-                                        @Html.DisplayFor(m => m.Socio)
-                                    </div>
+
+                                    @if (ViewBag.SociDd == "Si")
+                                    {
+                                        <div class="col-md-4">
+                                            <label>Socio:</label><br />
+                                            @Html.DropDownListFor(m => m.Socio, (SelectList)ViewBag.Socio, "SELECCIONE", new { @class = "form-control", id = "SocioDd" })
+                                        </div>
+                                    }
+                                    else
+
+                                    {
+                                        <div class="col-md-4">
+                                            <b>Socio:</b><br />
+                                            @Html.HiddenFor(m => m.Socio)
+                                            @Html.DisplayFor(m => m.Socio)
+                                        </div>
+                                    }
                                     <div class="col-md-4">
                                         <b>Nombre Cola:</b><br />
                                         @Html.HiddenFor(m => m.NombreCola)
@@ -148,13 +165,13 @@
                                         @Html.HiddenFor(m => m.OpcionMenu)
                                         @Html.DisplayFor(m => m.OpcionMenu)
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
 
                         @* Datos de Retencion *@
-                        <div class="col-md-12 info-block">                            
+                        <div class="col-md-12 info-block">
                             <div class="col-md-12 section-header">
                                 <h5>
                                     <i class="bi bi-lock gradient-icon"></i> Datos Retención
@@ -240,7 +257,7 @@
                                 <div class="col-md-4">
                                     <b>Número de Tarjeta:</b>
                                     @Html.TextBoxFor(m => m.NumeroTarjeta, new { id = "NumeroTarjeta", @class = "form-control", maxlength = "4", onkeypress = "return acceptNum(event)", autocomplete = "off" })
-                                    
+
                                 </div>
                                 <div class="col-md-4">
                                     <b>Número de Cliente:</b>

@@ -56,9 +56,27 @@ namespace Bradescard.Managers
         {
             try
             {
-                vm.FechaRegistro = DateTime.Now;
-                _db.CrmDetalles.Add(vm);
-                _db.SaveChanges();
+
+                //Validar que no se duplique el InteractionId
+
+                bool isDuplicated = false;
+
+                if (vm.InteractionId != null)
+                {
+                    var interInfo = _db.Database
+                        .SqlQueryRaw<int?>("EXEC dbo.GET_DETALLES_INTERACCIONES @InteractionId={0}", vm.InteractionId).AsEnumerable()
+                        .FirstOrDefault();
+
+                    isDuplicated = interInfo != null;
+                }
+
+                if (!isDuplicated)
+                {
+                    vm.FechaRegistro = DateTime.Now;
+                    _db.CrmDetalles.Add(vm);
+                    _db.SaveChanges();
+                }
+
             }
             catch (Exception ex)
             {
