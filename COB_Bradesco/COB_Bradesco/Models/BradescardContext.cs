@@ -11,6 +11,7 @@ namespace Bradescard.Models
         public DbSet<catResultados> catResultados{ get; set; }
         public DbSet<catsubClasificaciones> catsubClasificaciones { get; set; }
         public DbSet<catsubClasificaciones2> catsubClasificaciones2 { get; set; }
+        public DbSet<catSocio> catSocio { get; set; }
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
