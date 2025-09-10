@@ -17,7 +17,7 @@ $(document).ready(function () {
         $(this).val(ultimos4);
     });
 
-    //----------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------    
     //MotivoLlamada - Autenticacion
     $("#MotivoLlamada").change(function () {
 
@@ -365,6 +365,7 @@ $(document).ready(function () {
 
 
         let ddAuten2 = parseInt($("#Autenticacion").val(), 10);
+        
         // when not in 11( NO ES CLIENTE BRADESCARD)
         if (ddAuten2 !== 11)
         {
