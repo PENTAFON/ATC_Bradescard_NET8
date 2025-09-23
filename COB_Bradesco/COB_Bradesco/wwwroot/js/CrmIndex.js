@@ -369,13 +369,14 @@ $(document).ready(function () {
         if (ddAuten2 !== 11)
         {
             
+            // --- Validación de OrgTxt ---
             let orgTxt = $("#OrgTxt");
             if (orgTxt.length > 0) { // solo valida si existe en el DOM
                 let valorOrg = orgTxt.val()?.trim();
                 if (!valorOrg) {
                     orgTxt.css("border-color", "red").focus();
                     alert("¡El campo ORG es obligatorio!");
-                    return;
+                    return false;
                 } else {
                     orgTxt.css("border-color", "#ccc");
                 }
@@ -388,36 +389,43 @@ $(document).ready(function () {
                 if (!valorSocio || valorSocio === "0") {
                     socioDd.css("border-color", "red").focus();
                     alert("¡Debe seleccionar un socio!");
-                    return;
+                    return false;
                 } else {
                     socioDd.css("border-color", "#ccc");
                 }
             }
 
 
-            //Valida campos para guardar
-            let arrayCampos = ["NombreCliente", "NumeroTarjeta", "NumeroCuenta"];
-            for (let i = 0; i < arrayCampos.length; i++) {
-                if ($("#" + arrayCampos[i]).val().length === 0) {
-                    $("#" + arrayCampos[i]).css("border-color", "red");
-                    $("#" + arrayCampos[i]).focus();
-                    alert("¡Es obligatorio completar el formulario!");
-                    return;
-                } else {
-                    $("#" + arrayCampos[i]).css("border-color", "#ccc");
-                }
+          
+            // --- Validación de NombreCliente ---
+            let nombreCliente = $("#NombreCliente").val().trim();
+            if (nombreCliente.length === 0) {
+                $("#NombreCliente").css("border-color", "red").focus();
+                alert("¡El campo Nombre Cliente es obligatorio!");
+                return false;
+            } else {
+                $("#NombreCliente").css("border-color", "#ccc");
             }
 
-            // --- Validación específica de Número de Cuenta ---
+            // --- Validación de Número de Tarjeta (exactamente 4 dígitos) ---
+            let numeroTarjeta = $("#NumeroTarjeta").val().trim();
+            if (!/^\d{4}$/.test(numeroTarjeta)) {
+                $("#NumeroTarjeta").css("border-color", "red").focus();
+                alert("¡Favor de colocar los últimos 4 digitos de la tarjeta!");
+                return false;
+            } else {
+                $("#NumeroTarjeta").css("border-color", "#ccc");
+            }
+
+            // --- Validación de Número de Cuenta (exactamente 10 dígitos) ---
             let numeroCuenta = $("#NumeroCuenta").val().trim();
-            if (!/^\d{10}$/.test(numeroCuenta)) { // exactamente 10 dígitos
+            if (!/^\d{10}$/.test(numeroCuenta)) {
                 $("#NumeroCuenta").css("border-color", "red").focus();
                 alert("¡El Número de Cliente debe tener exactamente 10 dígitos!");
-                return;
+                return false;
             } else {
                 $("#NumeroCuenta").css("border-color", "#ccc");
             }
-
 
 
         }
