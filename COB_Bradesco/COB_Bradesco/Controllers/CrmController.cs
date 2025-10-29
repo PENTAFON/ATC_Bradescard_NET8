@@ -8,6 +8,8 @@ using System.Security.Cryptography;
 using System.Text;
 using Bradescard.ViewModel;
 using Bradescard.Utils;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace Bradescard.Controllers
 {
@@ -73,6 +75,45 @@ namespace Bradescard.Controllers
             }
 
 
+            if (vm.Dnis == "10" && !string.IsNullOrWhiteSpace(vm.Ani))
+            {
+                try
+                {
+                    var connStr = _db.Database.GetConnectionString();
+
+                    using (var cn = new SqlConnection(connStr))
+                    {
+                        cn.Open();
+                        using (var cmd = new SqlCommand("GET_INFO_CRM", cn))
+                        {
+                            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@Ani", vm.Ani);
+
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                if (reader.Read())
+                                {
+                                    vm.Org = reader["ORG"]?.ToString();
+                                    vm.Producto = reader["Producto"]?.ToString();
+                                    vm.NombreCliente = reader["NombreCliente"]?.ToString();
+                                    vm.NumeroTarjeta = reader["NumeroTarjeta"]?.ToString();
+                                    vm.NumeroCuenta = reader["NumeroCuenta"]?.ToString();
+                                    vm.Socio = _db.catSocio
+    .Where(a => a.Activo == true && a.Socio == reader["Socio"].ToString())
+    .Select(x => x.Id)
+    .FirstOrDefault()
+    .ToString();
+
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al cargar CRM previo: " + ex.Message);
+                }
+            }
 
             int r = 0;
             if (int.TryParse(vm.ChainId, out r))
@@ -109,7 +150,11 @@ namespace Bradescard.Controllers
             ViewBag.Socio = new SelectList(_db.catSocio.Where(a => a.Activo == true), "Id", "Socio");
             ViewBag.ListaVacia = new SelectList(string.Empty, "Value", "Text");
 
-        
+
+
+
+
+
             return View(vm);
         }
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -        

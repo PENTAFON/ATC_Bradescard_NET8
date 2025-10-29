@@ -10,6 +10,13 @@ $(document).ready(function () {
     //----------------------------------------------------------------------------------------------------------------
     const $numTarjeta = $("#NumeroTarjeta");
 
+
+    //const socioValor = $("#Socio").val(); 
+
+    //if (socioValor && socioValor.trim() !== "") {
+    //    $("#SocioDd").val(socioValor.trim());
+    //}
+
     // al cargar, normaliza el valor si viene con algo
     (function initNumeroTarjeta() {
         const raw = ($numTarjeta.val() || "").replace(/\D/g, "").slice(0, 16);
