@@ -14,6 +14,18 @@
 <script src="~/js/CrmIndex.js"></script>
  *@
 
+
+ <script>
+    // Base de URLs del backend
+    const api = {
+        consultaDatos: '@Url.Action("ConsultaDatos", "Crm")',
+        movAntes: '@Url.Action("ConsultaMovimientosAntesCorte", "Crm")',
+        movDespues: '@Url.Action("MovimientosDespues", "Crm")',
+        movPeriodo: '@Url.Action("MovimientosPeriodo", "Crm")',
+        nipCuestionario: '@Url.Action("ConsultaNip", "Crm")'
+    };
+</script>
+
 <link rel="stylesheet" href="~/css/CrmIndex.css" asp-append-version="true" />
 <script src="~/js/CrmIndex.js" asp-append-version="true"></script>
 
@@ -256,7 +268,14 @@
                                 </div>
                                 <div class="col-md-4">
                                     <b>Número de Tarjeta:</b>
-                                    @Html.TextBoxFor(m => m.NumeroTarjeta, new { id = "NumeroTarjeta", @class = "form-control", maxlength = "4", onkeypress = "return acceptNum(event)", autocomplete = "off" })
+                                    @Html.TextBoxFor(m => m.NumeroTarjeta, new
+                                        {
+                                            id = "NumeroTarjeta",
+                                            @class = "form-control",
+                                            maxlength = "16",
+                                            onkeypress = "return acceptNum(event)",
+                                            autocomplete = "off"
+                                        })
 
                                 </div>
                                 <div class="col-md-4">
@@ -265,6 +284,96 @@
                                 </div>
                             </div>
                         </div>
+
+
+
+                        @* Funciones Brandesco*@
+                        <div class="col-md-12 info-block">              
+
+                            <div class="row g-3 mb-3">
+
+                                <!-- ===== GRUPO 1: CONSULTA DE DATOS ===== -->
+                                <div class="col-md-12">
+                                    <div class="card shadow-sm border-0 mb-3">
+                                        <div class="card-header" style="background-color:#820711; color:white; font-weight:600;">
+                                            Consulta de Datos
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <button type="button" class="btn btn-outline-danger" id="btnConsultaDatos">
+                                                    <i class="bi bi-search"></i> Consultar Datos
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- === RESULTADO DE CONSULTA DE DATOS === -->
+                                <div id="ApiResultDatosContainer" class="card shadow-sm border-0 mt-1" style="display:none;">
+                                    <div class="card-header" style="background-color:#f5f5f5; font-weight:600; color:#820711;">                                        
+                                    </div>
+                                    <div class="card-body" id="ApiResultDatosContent" style="font-size:14px; color:#333;">                                        
+                                    </div>
+                                </div>
+
+                                <!-- ===== GRUPO 2: CONSULTA DE MOVIMIENTOS ===== -->
+                                <div class="col-md-12">
+                                    <div class="card shadow-sm border-0 mb-3">
+                                        <div class="card-header" style="background-color:#b71c1c; color:white; font-weight:600;">
+                                            Consulta de Movimientos
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <button type="button" class="btn btn-outline-danger" id="btnMovAntes">
+                                                    <i class="bi bi-clock-history"></i> Antes del Corte
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger" id="btnMovDespues">
+                                                    <i class="bi bi-clock"></i> Después del Corte
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger" id="btnMovPeriodo">
+                                                    <i class="bi bi-calendar-range"></i> Por Periodo
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ===== SECCIÓN DE RESULTADO DINÁMICO ===== -->
+                                <div id="ApiResultContainer" class="card shadow-sm border-0 mt-1" style="display:none;">
+                                    <div class="card-header" style="background-color:#f5f5f5; font-weight:600; color:#820711;">
+                                    </div>
+                                    <div class="card-body" id="ApiResultContent" style="font-size:14px; color:#333;">                                        
+                                    </div>
+                                </div>
+
+                                <!-- ===== GRUPO 3: CONSULTA NIP ===== -->
+                                <div class="col-md-12">
+                                    <div class="card shadow-sm border-0 mb-3">
+                                        <div class="card-header" style="background-color:#820711; color:white; font-weight:600;">
+                                            Consultas NIP
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <button type="button" class="btn btn-outline-danger" id="btnConsultaNip">
+                                                    <i class="bi bi-search"></i> Nip Cuestionario
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- === RESULTADO DE CONSULTA NIP === -->
+                                <div id="ApiResultNipContainer" class="card shadow-sm border-0 mt-1" style="display:none;">
+                                    <div class="card-header" style="background-color:#f5f5f5; font-weight:600; color:#820711;">
+                                    </div>
+                                    <div class="card-body" id="ApiResultNipContent" style="font-size:14px; color:#333;">
+                                    </div>
+                                </div>
+                      
+                            </div>
+                           
+                        </div>
+
 
 
                         @* Tipificaciones *@

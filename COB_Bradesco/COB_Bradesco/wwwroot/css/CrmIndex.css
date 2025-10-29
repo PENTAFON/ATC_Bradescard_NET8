@@ -69,3 +69,14 @@ body {
 .d-none {
     display: none !important;
 }
+
+.btn-outline-danger.active-btn {
+    background-color: #b71c1c !important;
+    color: #fff !important;
+    border-color: #b71c1c !important;
+}
+
+    .btn-outline-danger.active-btn:hover {
+        background-color: #820711 !important;
+        border-color: #820711 !important;
+    }

@@ -7,6 +7,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using Bradescard.ViewModel;
+using Bradescard.Utils;
 
 namespace Bradescard.Controllers
 {
@@ -14,6 +15,14 @@ namespace Bradescard.Controllers
     {
         private readonly BradescardContext _db = new BradescardContext();
         private readonly CrmManager _mg = new CrmManager();
+
+        private readonly BradescoApi _api;
+
+        public CrmController(BradescoApi api)
+        {
+            _api = api;
+        }
+
         //=======================================================
         // GET: CrmController
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -40,6 +49,18 @@ namespace Bradescard.Controllers
             vm.Username = Request.Query["USERNAME"];
             vm.Ani = Request.Query["ANI"];
             vm.Dnis = Request.Query["DNIS"];
+
+            string numeroTarjetaQuery = Request.Query["NUMEROTARJETA"];
+            if (!string.IsNullOrWhiteSpace(numeroTarjetaQuery))
+            {
+                numeroTarjetaQuery = numeroTarjetaQuery.Trim();
+                // validar 16 dígitos exactos
+                if (System.Text.RegularExpressions.Regex.IsMatch(numeroTarjetaQuery, @"^\d{16}$"))
+                {
+                    vm.NumeroTarjeta = numeroTarjetaQuery;
+                }
+            }
+
 
             if (string.IsNullOrWhiteSpace(vm.Org))
             {
@@ -194,6 +215,90 @@ namespace Bradescard.Controllers
             }
         }
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        [HttpGet]
+        public async Task<IActionResult> ConsultaDatos(string numeroTarjeta)
+        {
+            try
+            {                
+                const string endpoint = "/api/cuenta/datos";
+
+                var result = await _api.GetAsync(endpoint, numeroTarjeta);
+                return Content(result, "application/json");
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = true, message = ex.Message });
+            }
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        [HttpGet]
+        public async Task<IActionResult> ConsultaMovimientosAntesCorte(string numeroTarjeta)
+        {
+            try
+            {
+                const string endpoint = "/api/cuenta/movimientos/antes_corte";
+                var result = await _api.GetAsync(endpoint, numeroTarjeta);
+                return Content(result, "application/json");
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = true, message = ex.Message });
+            }
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        [HttpGet]
+        public async Task<IActionResult> MovimientosDespues(string numeroTarjeta)
+        {
+            try
+            {
+                const string endpoint = "/api/cuenta/movimientos/despues_corte/";
+                var result = await _api.GetAsync(endpoint, numeroTarjeta);
+                return Content(result, "application/json");
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = true, message = ex.Message });
+            }
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        [HttpGet]
+        public async Task<IActionResult> MovimientosPeriodo(string numeroTarjeta, string periodo)
+        {
+            try
+            {
+                string endpoint = "/api/cuenta/movimientos/por_periodo/";
+                periodo = periodo?.Replace("/", "").Trim();
+                string parametro = $"{numeroTarjeta}/{periodo}";
+                var result = await _api.GetAsync(endpoint, parametro);
+                return Content(result, "application/json");
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = true, message = ex.Message });
+            }
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        [HttpGet]
+        public async Task<IActionResult> ConsultaNip(string numeroTarjeta)
+        {
+            try
+            {
+                const string endpoint = "/api/nip/cuestionario";
+
+                var result = await _api.GetAsync(endpoint, numeroTarjeta);
+                return Content(result, "application/json");
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = true, message = ex.Message });
+            }
+        }
+
 
     }
 }
