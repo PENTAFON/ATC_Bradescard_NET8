@@ -12,6 +12,7 @@ namespace Bradescard.Models
         public string MotivoLlamada { get; set; }
         public bool Activo { get; set; }
         public int LineaNegocioId { get; set; }
+        public string Producto { get; set; }
     }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 }

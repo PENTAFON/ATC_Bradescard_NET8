@@ -1,15 +1,16 @@
 ﻿using Bradescard.Managers;
 using Bradescard.Models;
+using Bradescard.Utils;
+using Bradescard.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Data;
 using System.Security.Cryptography;
 using System.Text;
-using Bradescard.ViewModel;
-using Bradescard.Utils;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
 
 namespace Bradescard.Controllers
 {
@@ -29,7 +30,7 @@ namespace Bradescard.Controllers
         // GET: CrmController
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         public ActionResult Index()
-        {   
+        {
             CrmDetalles vm = new CrmDetalles();
 
             vm.Bin = Request.Query["BIN"];
@@ -75,43 +76,49 @@ namespace Bradescard.Controllers
             }
 
 
-            if (vm.Dnis == "10" && !string.IsNullOrWhiteSpace(vm.Ani))
+            if (!string.IsNullOrWhiteSpace(vm.Ani) && vm.ProjectId == "BDC_Aclaraciones WhatsApp")
             {
                 try
                 {
-                    var connStr = _db.Database.GetConnectionString();
-
-                    using (var cn = new SqlConnection(connStr))
+                    using var cn = new SqlConnection(_db.Database.GetConnectionString());
+                    using var cmd = new SqlCommand("GET_LAST_INFO_CRM_WHATS", cn)
                     {
-                        cn.Open();
-                        using (var cmd = new SqlCommand("GET_INFO_CRM", cn))
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    string aniwhats = "tel: 52" + vm.Ani.Replace(" ","");
+                    cmd.Parameters.AddWithValue("@Ani", aniwhats);
+
+                    cn.Open();
+
+                    using var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        vm.Org = reader["ORG"] as string;
+                        vm.Producto = reader["Producto"] as string;
+                        vm.NombreCliente = reader["NombreCliente"] as string;
+                        vm.NumeroTarjeta = reader["NumeroTarjeta"] as string;
+                        vm.NumeroCuenta = reader["NumeroCuenta"] as string;
+
+                        var socio = reader["Socio"]?.ToString();
+
+                        if (!string.IsNullOrWhiteSpace(socio))
                         {
-                            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@Ani", vm.Ani);
+                            var idSocio = _db.catSocio
+                                .Where(a => a.Activo && a.Socio == socio)
+                                .Select(x => (int?)x.Id)
+                                .FirstOrDefault();
 
-                            using (var reader = cmd.ExecuteReader())
-                            {
-                                if (reader.Read())
-                                {
-                                    vm.Org = reader["ORG"]?.ToString();
-                                    vm.Producto = reader["Producto"]?.ToString();
-                                    vm.NombreCliente = reader["NombreCliente"]?.ToString();
-                                    vm.NumeroTarjeta = reader["NumeroTarjeta"]?.ToString();
-                                    vm.NumeroCuenta = reader["NumeroCuenta"]?.ToString();
-                                    vm.Socio = _db.catSocio
-    .Where(a => a.Activo == true && a.Socio == reader["Socio"].ToString())
-    .Select(x => x.Id)
-    .FirstOrDefault()
-    .ToString();
-
-                                }
-                            }
+                            vm.Socio = idSocio?.ToString() ?? string.Empty;
+                        }
+                        else
+                        {
+                            vm.Socio = string.Empty;
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error al cargar CRM previo: " + ex.Message);
+                    Console.WriteLine($"Error al cargar CRM previo: {ex.Message}");
                 }
             }
 
@@ -131,8 +138,8 @@ namespace Bradescard.Controllers
                     {
                         return RedirectToAction("Error", "Result", new { message = data.ErrorMessage });
                     }
-                                       
-                  
+
+
                 }
                 catch (Exception ex)
                 {
@@ -146,13 +153,32 @@ namespace Bradescard.Controllers
                 vm.Clientes = new CrmClientesVm();
             }
 
-            ViewBag.MotivoLlamada = new SelectList(_db.catMotivoLlamada.Where(a => a.Activo == true), "Id", "MotivoLlamada");
+            //Valida la VQs para mostrar los registros pasados y
+            //su respectivo árbol de tipificaciones 29_Oct_25
+            if (vm.ProjectId == "BDC_Aclaraciones Voz")
+            {
+                ViewBag.MotivoLlamada =
+                    new SelectList(_db.catMotivoLlamada.Where(a =>   a.Producto == "Voz"), "Id", "MotivoLlamada");
+                //Busqueda por Ani en la tabla principal: [dbo].[tbl_CrmDetalles]
+
+
+            }
+            else if (vm.ProjectId == "BDC_Aclaraciones WhatsApp")
+            {
+                ViewBag.MotivoLlamada =
+                    new SelectList(_db.catMotivoLlamada.Where(a =>   a.Producto == "WA"), "Id", "MotivoLlamada");
+                //Busqueda por Ani en la tabla principal: [dbo].[tbl_CrmDetalles]
+
+            }
+            else
+            {
+                ViewBag.MotivoLlamada = 
+                    new SelectList(_db.catMotivoLlamada.Where(a => a.Activo == true
+                    && a.Producto == "Aclaraciones"), "Id", "MotivoLlamada");
+            }
+
             ViewBag.Socio = new SelectList(_db.catSocio.Where(a => a.Activo == true), "Id", "Socio");
             ViewBag.ListaVacia = new SelectList(string.Empty, "Value", "Text");
-
-
-
-
 
 
             return View(vm);
