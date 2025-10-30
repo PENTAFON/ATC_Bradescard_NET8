@@ -54,11 +54,13 @@ namespace Bradescard.Controllers
             vm.Dnis = Request.Query["DNIS"];
 
             string numeroTarjetaQuery = Request.Query["NUMEROTARJETA"];
+
             if (!string.IsNullOrWhiteSpace(numeroTarjetaQuery))
             {
                 numeroTarjetaQuery = numeroTarjetaQuery.Trim();
                 // validar 16 dígitos exactos
-                if (System.Text.RegularExpressions.Regex.IsMatch(numeroTarjetaQuery, @"^\d{16}$"))
+                if (System.Text.RegularExpressions
+                    .Regex.IsMatch(numeroTarjetaQuery, @"^\d{16}$"))
                 {
                     vm.NumeroTarjeta = numeroTarjetaQuery;
                 }
@@ -76,7 +78,7 @@ namespace Bradescard.Controllers
             }
 
 
-            if (!string.IsNullOrWhiteSpace(vm.Ani) && vm.ProjectId == "BDC_Aclaraciones WhatsApp")
+            if (!string.IsNullOrWhiteSpace(vm.Ani))
             {
                 try
                 {
@@ -85,7 +87,22 @@ namespace Bradescard.Controllers
                     {
                         CommandType = CommandType.StoredProcedure
                     };
-                    string aniwhats = "tel: 52" + vm.Ani.Replace(" ","");
+
+
+                    string aniwhats = "";
+                    if (vm.Ani.Contains("tel"))
+                    {
+                        aniwhats = vm.Ani;
+                    }
+                    else if (vm.Ani.StartsWith("521"))
+                    {
+                        aniwhats = "tel: 52" + vm.Ani.Substring(3);
+                    }
+                    else
+                    {
+                        aniwhats = "tel: 52" + vm.Ani.Replace(" ", "");
+                    }
+                    
                     cmd.Parameters.AddWithValue("@Ani", aniwhats);
 
                     cn.Open();
@@ -96,8 +113,11 @@ namespace Bradescard.Controllers
                         vm.Org = reader["ORG"] as string;
                         vm.Producto = reader["Producto"] as string;
                         vm.NombreCliente = reader["NombreCliente"] as string;
-                        vm.NumeroTarjeta = reader["NumeroTarjeta"] as string;
                         vm.NumeroCuenta = reader["NumeroCuenta"] as string;
+                        
+                        if (string.IsNullOrEmpty(vm.NumeroTarjeta)) {
+                             vm.NumeroTarjeta = reader["NumeroTarjeta"] as string;
+                        }
 
                         var socio = reader["Socio"]?.ToString();
 
