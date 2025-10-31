@@ -180,18 +180,29 @@ namespace Bradescard.Controllers
                 ViewBag.MotivoLlamada =
                     new SelectList(_db.catMotivoLlamada.Where(a => a.Activo == true 
                     && a.Producto == "Voz"), "Id", "MotivoLlamada");
+
+                ViewBag.txtEscenario = "SI";
+                ViewBag.showRetencion = "NO";
+
             }
             else if (vm.ProjectId == "BDC_Aclaraciones WhatsApp")
             {
                 ViewBag.MotivoLlamada =
                     new SelectList(_db.catMotivoLlamada.Where(a => a.Activo == true 
                     && a.Producto == "WA"), "Id", "MotivoLlamada");
+
+                ViewBag.txtEscenario = "NO";
+                ViewBag.showRetencion = "NO";
+
             }
             else
             {
                 ViewBag.MotivoLlamada = 
                     new SelectList(_db.catMotivoLlamada.Where(a => a.Activo == true
                     && a.Producto == "Aclaraciones"), "Id", "MotivoLlamada");
+
+                ViewBag.txtEscenario = "NO";
+                ViewBag.showRetencion = "SI";
             }
 
             ViewBag.Socio = new SelectList(_db.catSocio.Where(a => a.Activo == true), "Id", "Socio");

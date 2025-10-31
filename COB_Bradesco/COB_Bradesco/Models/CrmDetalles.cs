@@ -41,6 +41,7 @@ namespace Bradescard.Models
         public string? Username { get; set; }
         public string? Ani { get; set; }
         public string? Dnis { get; set; }
+        public string? EscenarioLlamada { get; set; }
         
         //Manejo de errores
         [NotMapped] public CrmClientesVm Clientes { get; set; }
