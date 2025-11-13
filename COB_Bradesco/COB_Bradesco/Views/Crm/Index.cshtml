@@ -42,6 +42,7 @@
 
 
 <div class="container-fluid mt-4">
+
     @using (Html.BeginForm("GuardaIndex", "Crm", FormMethod.Post, new { id = "formCliente" }))
     {
         <div class="row">
@@ -177,7 +178,10 @@
                                         @Html.HiddenFor(m => m.OpcionMenu)
                                         @Html.DisplayFor(m => m.OpcionMenu)
                                     </div>
-
+                                    <div class="col-md-4">
+                                        <b>Ticket:</b>
+                                        @Html.TextBoxFor(m => m.Ticket, new { @class = "form-control", autocomplete = "off", maxlength = "8", onkeypress = "return acceptNum(event)" })
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -253,7 +257,7 @@
                                         <b>Meses Desinteresante:</b><br />
                                         @Html.HiddenFor(m => m.Clientes.MesesDesinteresante)
                                         @Html.DisplayFor(m => m.Clientes.MesesDesinteresante)
-                                    </div>
+                                    </div>                                   
                                 </div>
                             </div>
                         }
