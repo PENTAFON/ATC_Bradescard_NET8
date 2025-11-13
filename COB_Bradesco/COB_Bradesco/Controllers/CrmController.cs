@@ -224,18 +224,18 @@ namespace Bradescard.Controllers
         [HttpPost]
         public ActionResult GuardaIndex(CrmDetalles vm) 
         {
-            try
-            {
+            //try
+            //{
             _mg.SaveCrmIndex(vm);
               
                 return RedirectToAction("Success", "Result");
-            }
-            catch (Exception e)
-            {
-                vm.ErrorMessage = e.Message;
+            //}
+            //catch (Exception e)
+            //{
+            //    vm.ErrorMessage = e.Message;
 
-                return RedirectToAction("ErrorCrm", "Result", new { message = vm.ErrorMessage });
-            }
+            //    return RedirectToAction("ErrorCrm", "Result", new { message = vm.ErrorMessage });
+            //}
 
         }
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

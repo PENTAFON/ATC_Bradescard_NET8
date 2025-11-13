@@ -54,8 +54,8 @@ namespace Bradescard.Managers
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         public void SaveCrmIndex(CrmDetalles vm)
         {
-            try
-            {
+            //try
+            //{
 
                 //Validar que no se duplique el InteractionId
 
@@ -77,14 +77,14 @@ namespace Bradescard.Managers
                     _db.SaveChanges();
                 }
 
-            }
-            catch (Exception ex)
-            {
+            //}
+            //catch (Exception ex)
+            //{
 
-                vm.ErrorMessage = "Error al guardar los detalles CRM: " + ex.Message;
+            //    vm.ErrorMessage = "Error al guardar los detalles CRM: " + ex.Message;
 
-                throw;
-            }
+            //    throw;
+            //}
 
         }
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
