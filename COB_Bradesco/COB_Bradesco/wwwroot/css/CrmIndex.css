@@ -30,9 +30,14 @@ body {
 
 /* Sidebar */
 .sidebar {
-    background-color: white;
-    border-right: 1px solid #ddd;
+    border-right: 1px solid #820711;
+    border-bottom: 1px solid #820711;
     padding: 1rem;
+    background-color: white;
+    border-radius: 1rem;
+    margin-bottom: 20px;
+    height: auto !important; /* se adapta al contenido */
+    align-self: flex-start; /* evita que se estire con el col-md-10 */
 }
 
 /* Contenedor principal */
