@@ -64,7 +64,7 @@ namespace Bradescard.Managers
                 if (vm.InteractionId != null)
                 {
                     var interInfo = _db.Database
-                        .SqlQueryRaw<int?>("EXEC dbo.GET_DETALLES_INTERACCIONES @InteractionId={0}", vm.InteractionId).AsEnumerable()
+                        .SqlQueryRaw<int?>("EXEC dbo.GET_DETALLES_INTERACCIONES_BY_USER @InteractionId={0},@Username={1}", vm.InteractionId,vm.Username).AsEnumerable()
                         .FirstOrDefault();
 
                     isDuplicated = interInfo != null;
